@@ -3,6 +3,8 @@ spring:
     name: elastic
 
 logging:
+  file:
+    name: logs/elasticApp.json
   level:
     com:
       example:

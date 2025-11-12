@@ -18,7 +18,7 @@ public class HomeController {
 
     @GetMapping
     public ResponseEntity<?> home() {
-        log.info("LOGS :: Home Controller ");
+        log.info("hi,hello,bye");
         return new ResponseEntity<>("done", HttpStatus.OK);
     }
 }
