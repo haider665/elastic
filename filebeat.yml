@@ -6,44 +6,32 @@ filebeat.inputs:
     json.keys_under_root: true
     json.add_error_key: true
     json.message_key: message
-    fields:
-      log_type: spring-boot-app
-    fields_under_root: true
 
 # Elasticsearch output
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
   index: "spring-boot-logs-%{+yyyy.MM.dd}"
-  pipeline: "spring-boot-test-pipeline"
+  username: "elastic"
+  password: "changeme"
 
-# IMPORTANT: Disable ILM completely
-setup.ilm.enabled: false
-
-# Setup template for regular indices (not data streams)
+# Template settings
 setup.template.name: "spring-boot-logs"
 setup.template.pattern: "spring-boot-logs-*"
 setup.template.enabled: true
 setup.template.overwrite: true
-setup.template.settings:
-  index.number_of_shards: 1
-  index.number_of_replicas: 0
 
-# Kibana configuration
+# Disable ILM
+setup.ilm.enabled: false
+
+# Kibana
 setup.kibana:
   host: "kibana:5601"
 
 # Logging
 logging.level: info
-logging.to_files: false
 logging.to_stderr: true
 
-# Processors to enrich data
+# Processors
 processors:
-  - decode_json_fields:
-      fields: ["message"]
-      target: ""
-      overwrite_keys: true
-      when:
-        has_fields: ['message']
-  - add_host_metadata:
-      when.not.contains.tags: forwarded
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~

@@ -21,4 +21,12 @@ public class HomeController {
         log.info("hi,hello,bye");
         return new ResponseEntity<>("done", HttpStatus.OK);
     }
+
+    @GetMapping("/error")
+    public ResponseEntity<?> error() {
+        log.info("will throw error");
+        throw new IllegalStateException();
+
+//        return new ResponseEntity<>("done", HttpStatus.OK);
+    }
 }
