@@ -21,4 +21,9 @@ public class HomeController {
         log.info("hi,hello,bye");
         return new ResponseEntity<>("done", HttpStatus.OK);
     }
+
+    @GetMapping("/error")
+    public ResponseEntity<?> error() {
+        throw new RuntimeException("error");
+    }
 }

@@ -1,0 +1,17 @@
+# elastalert/config.yaml
+rules_folder: rules
+run_every:
+  minutes: 1
+buffer_time:
+  minutes: 15
+
+es_host: elasticsearch
+es_port: 9200
+
+# Since your last config had security disabled:
+# es_username: elastic
+# es_password: changeme
+# use_ssl: False
+
+# The index where ElastAlert writes its own metadata
+writeback_index: elastalert_status

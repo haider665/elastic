@@ -54,6 +54,32 @@ services:
       elasticsearch:
         condition: service_healthy
 
+  elastalert:
+    image: jertel/elastalert2:latest
+    container_name: elastalert
+    restart: unless-stopped
+    volumes:
+      - ./elastalert/config.yml:/opt/elastalert/config.yml
+      - ./elastalert/rules:/opt/elastalert/rules
+    networks:
+      - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "
+      elastalert-create-index \
+        --host elasticsearch \
+        --port 9200 \
+        --no-auth \
+        --no-ssl \
+        --index elastalert_status \
+        --old-index '' \
+        --url-prefix '' \
+        --config /opt/elastalert/config.yml || true &&
+      elastalert --verbose --config /opt/elastalert/config.yml
+      "
+
 volumes:
   elasticsearch_data:
     driver: local

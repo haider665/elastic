@@ -1,0 +1,31 @@
+# elastalert/rules/spring_boot_error.yml
+name: Spring Boot Error Spike
+type: frequency
+
+# Index to search
+index: spring-boot-logs-*
+
+# Alert if 2 events occur within a 1-minute window
+num_events: 2
+timeframe:
+  minutes: 1
+
+# Filter the logs (Elasticsearch Query DSL)
+#filter:
+#  - term:
+#      message: "ERROR"
+#      # Or if you have a parsed 'level' field:
+#      # term:
+#      #   level: "ERROR"
+filter:
+  - query:
+      match:
+        message: "ERROR"
+
+# What to do when the alert triggers
+alert:
+  - "debug" # Prints to the Docker log (good for testing)
+# - "slack" # Uncomment later to use Slack
+
+# Slack details (optional for now)
+# slack_webhook_url: "https://hooks.slack.com/services/..."
